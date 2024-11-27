@@ -32,6 +32,8 @@ export default function Page() {
       <section>
         <h2 className="text-xl text-center font-semibold mb-4">Search: {searchParamsArray}</h2>
         {Array.isArray(tableData) && tableData.length > 0 && <Table tableData={tableData}/> }
+        <br />
+        <h3 className="text-xl text-center mb-4">{Array.isArray(tableData) ? tableData.length : "0"} results</h3>
       </section>
     </main>
     </div>
