@@ -1,10 +1,16 @@
 'use client'
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const EditForm = ({ data }: {data: any}) => {
+  const [showForm, setShowForm] = useState(true)
+  const [editData, setEditData] = useState(`Edit AppID ${data.AppID}`)
+
   const { push } = useRouter()
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    setShowForm(false)
+    setEditData('Sending changes...')
     const formData = new FormData(e.target);
     const request = Object.fromEntries(formData.entries());
     
@@ -18,27 +24,35 @@ const EditForm = ({ data }: {data: any}) => {
     .then(( { success } ) => {
       if (success) {
         push('/')
+      } else {
+        setEditData('Error!')
+        setShowForm(true)
       }
     })
   };
   
   const handleDelete = async (e: any) => {
     e.preventDefault()
+    setShowForm(false)
+    setEditData('Deleting app...')
     fetch(`/api/edit/${data.AppID}`, {
       method: 'DELETE'
     }).then((res) => res.json())
     .then(( { success } ) => {
       if (success) {
         push('/')
+      } else {
+        setEditData('Error!')
+        setShowForm(true)
       }
     })
   };
 
   return (
     <div className="max-w-4xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Edit AppID {data.AppID}</h1>
+      <h1 className="text-2xl font-bold mb-4">{editData}</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      {showForm && <form onSubmit={handleSubmit} className="space-y-4">
         <div className="flex space-x-4">
           <button
               type="submit"
@@ -516,7 +530,7 @@ const EditForm = ({ data }: {data: any}) => {
           ></textarea>
         </div>
 
-      </form>
+      </form>}
     </div>
   );
 };
