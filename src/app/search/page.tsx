@@ -13,20 +13,27 @@ export default function Page() {
 
   useEffect( () => {
     async function getTableData() {
+      setTableData({})
       let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/search/${searchParamsArray}`)
       let data = await res.json()
       setTableData(data)
     }
     getTableData()
-  }, [])
+  }, [searchParams])
 
   return (
-    <div className="">
-      <h1>Search: {searchParamsArray}</h1>
+    <div className="min-h-screen bg-gray-50 text-gray-800">
+
+    <main className="container mx-auto px-4 py-8">
       <div className="mb-6">
         <SearchBar />
+      </div>
+
+      <section>
+        <h2 className="text-xl text-center font-semibold mb-4">Search: {searchParamsArray}</h2>
         {Array.isArray(tableData) && tableData.length > 0 && <Table tableData={tableData}/> }
-      </div> 
+      </section>
+    </main>
     </div>
   )
 }

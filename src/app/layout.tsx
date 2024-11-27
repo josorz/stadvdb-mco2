@@ -53,7 +53,11 @@ export default function RootLayout({
         <main className="container mx-auto p-6">
           {children}
         </main>
-
+        <footer className="bg-gray-800 text-gray-400 py-4">
+        <div className="container mx-auto px-4 text-center">
+          <a href="https://github.com/josorz/stadvdb-mco2">Repo</a>
+        </div>
+      </footer>
       </body>
     </html>
   );
