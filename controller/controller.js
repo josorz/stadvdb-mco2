@@ -2,15 +2,28 @@ const { pool } = require("../database/db.js")
 
 
 exports.getHome = async (req, res) => {
-    const [rows] = await pool.query('SELECT AppID, Name, Release_date FROM steamgames ORDER BY Release_date DESC LIMIT 10')
-    const [q2] = await pool.query('SELECT COUNT(*) AS count FROM steamgames')
-    const count = q2[0]?.count
+    const response = await fetch('http://localhost:4000/getTopEntries', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const rows = await response.json();
+    const countRes = await fetch('http://localhost:4000/getCount', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    const countjson = await countRes.json();
+    const count = countjson[0]['COUNT(*)'];
 
     try {
         rows.forEach(row => {
             if (row.Release_date) {
                 // Ensure Release_date is parsed as UTC
-                const releaseDate = new Date(row.Release_date + 'Z');  // Append 'Z' to mark it as UTC
+                const releaseDate = new Date(row.Release_date);  // Append 'Z' to mark it as UTC
                 row.Release_date = releaseDate.toISOString().split('T')[0];
             }
         });
@@ -43,7 +56,7 @@ exports.getGames = async (req, res) => {
 
 exports.getSingleGame = async (req, res) => {
     try {
-        const { id } = await req.params; 
+        const { id } = await req.params;
         const [rows] = await pool.query('SELECT * FROM steamgames WHERE AppID = ' + id)
 
         rows.forEach(row => {
@@ -54,7 +67,7 @@ exports.getSingleGame = async (req, res) => {
             }
         });
 
-        res.render('edit/edit', { data : rows[0] });
+        res.render('edit/edit', { data: rows[0] });
     } catch (e) {
         res.status(500).json({ message: e.message });
     }
@@ -63,17 +76,17 @@ exports.getSingleGame = async (req, res) => {
 function sanitizeParams(params, id) {
     // Loop through each key in the object
     for (let key in params) {
-      // If the value is undefined, replace it with null
-      if (params[key] === undefined) {
-        params[key] = null;
-      }
-      // Optionally, if you want to treat empty strings as null, uncomment this:
-      if (params[key] === '') {
-        params[key] = null;
-      }
+        // If the value is undefined, replace it with null
+        if (params[key] === undefined) {
+            params[key] = null;
+        }
+        // Optionally, if you want to treat empty strings as null, uncomment this:
+        if (params[key] === '') {
+            params[key] = null;
+        }
     }
     return params
-  }
+}
 
 exports.editGame = async (req, res) => {
     // Di ko linagay
@@ -84,7 +97,7 @@ exports.editGame = async (req, res) => {
     // 
     // dahil need pa ng react magic sa front end
     try {
-        const { id } = await req.params; 
+        const { id } = await req.params;
         const { body } = await req
 
         const sanitizedParam = sanitizeParams(body, id)
@@ -168,17 +181,28 @@ exports.editGame = async (req, res) => {
         ]
 
         await pool.query(sql, qparam)
-    
-        return res.status(200).json( { success : true })
+
+        return res.status(200).json({ success: true })
     } catch (err) {
         console.log(err)
-        return res.status(500).json( { success : false, err })
+        return res.status(500).json({ success: false, err })
     }
 }
 
 exports.deleteGame = async (req, res) => {
     try {
-        res.status(200).json({ success : true })
+        const { id } = await req.params;
+        const response = await fetch('http://localhost:4000/deleteEntry', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ AppID: id })
+        });
+
+        const data = await response.json();
+        console.log(data)
+        res.status(200).json({ success: true })
     } catch (e) {
         res.status(500).json({ message: e.message });
     }
