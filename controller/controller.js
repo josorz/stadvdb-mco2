@@ -178,6 +178,8 @@ exports.editGame = async (req, res) => {
 
 exports.deleteGame = async (req, res) => {
     try {
+        const { id } = await req.params;
+        await pool.query("DELETE FROM steamgames WHERE AppID = ?", [id])
         res.status(200).json({ success : true })
     } catch (e) {
         res.status(500).json({ message: e.message });
