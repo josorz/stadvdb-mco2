@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <title>Steam Games</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body class="body">
+  <%- include('../partial/header.ejs'); %>
+
+  <!-- Main Content -->
+  <main class="container">
+    <%- include('../partial/table.ejs', rows); %>
+
+    <h3 className="text-xl text-center mb-4"><%= count %> games in database</h3>
+  </main>
+
+  <!-- Footer -->
+  <%- include('../partial/footer.ejs'); %>
+
+</body>
+
+</html>

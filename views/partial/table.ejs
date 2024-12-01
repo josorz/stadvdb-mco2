@@ -1,0 +1,29 @@
+<head>
+  <link rel="stylesheet" href="/css/table.css">
+</head>
+<div class="table-container">
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th class="th-appid">AppID</th>
+        <th class="th-name">Name</th>
+        <th class="th-release-date">Release Date</th>
+        <th class="th-actions"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% rows.forEach((game)=> { %>
+      <tr>
+        <td><%= game.AppID %></td>
+        <td><%= game.Name %></td>
+        <td><%= game.Release_date %></td>
+        <td>
+          <button onClick="window.location.href='/edit/<%= game.AppID %>'">
+            <img src=" /images/edit.svg" />
+          </button>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>

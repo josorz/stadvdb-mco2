@@ -1,0 +1,64 @@
+/* Fonts */
+body {
+    font-family: var(--geist-sans-variable), var(--geist-mono-variable);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Header */
+  .header {
+    background-color: #1f2937; /* bg-gray-800 */
+    color: white;
+    padding: 1rem; /* p-4 */
+  }
+  
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .nav-logo {
+    font-size: 1.125rem; /* text-lg */
+    font-weight: bold;
+  }
+  
+  .nav-logo a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .nav-logo a:hover {
+    color: #9ca3af; /* hover:text-gray-400 */
+  }
+  
+  .nav-list {
+    display: flex;
+    gap: 1.5rem; /* space-x-6 */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-list a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .nav-list a:hover {
+    color: #9ca3af; /* hover:text-gray-400 */
+  }
+
+  /* Footer */
+  .footer {
+    background-color: #1f2937; /* bg-gray-800 */
+    color: #9ca3af; /* text-gray-400 */
+    padding: 1rem 0; /* py-4 */
+    text-align: center;
+  }
+  
+  .footer a {
+    color: #9ca3af; /* Ensure links inherit footer color */
+    text-decoration: none;
+  }
+  
