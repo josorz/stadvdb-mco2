@@ -28,22 +28,6 @@
     text-align: left;
   }
   
-  .th-appid {
-    width: 5rem; /* 20 in Tailwind */
-  }
-  
-  .th-name {
-    width: 10rem; /* 40 in Tailwind */
-  }
-  
-  .th-release-date {
-    width: 8rem; /* 32 in Tailwind */
-  }
-  
-  .th-actions {
-    width: 3rem; /* 12 in Tailwind */
-  }
-  
   /* Row styling */
   .custom-table tbody tr {
     border-top: 1px solid #e5e7eb; /* Tailwind's border-t gray-200 */

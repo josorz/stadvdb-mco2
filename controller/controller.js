@@ -20,6 +20,27 @@ exports.getHome = async (req, res) => {
     }
 }
 
+exports.getGames = async (req, res) => {
+    try {
+        const { query } = await req.params
+        const search = query.slice(0, -1).replace("+", " ")
+        const [rows] = await pool.query(`SELECT AppID, Name, Release_date FROM steamgames WHERE Name LIKE '%${search}%' OR AppID='${search}';`)
+
+        rows.forEach(row => {
+            if (row.Release_date) {
+                // Ensure Release_date is parsed as UTC
+                const releaseDate = new Date(row.Release_date + 'Z');  // Append 'Z' to mark it as UTC
+                row.Release_date = releaseDate.toISOString().split('T')[0];
+            }
+        });
+
+        res.render('search/search', { rows, count: rows.length });
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({ err })
+    }
+}
+
 exports.getSingleGame = async (req, res) => {
     try {
         const { id } = await req.params; 
@@ -65,8 +86,6 @@ exports.editGame = async (req, res) => {
     try {
         const { id } = await req.params; 
         const { body } = await req
-
-        console.log(body)
 
         const sanitizedParam = sanitizeParams(body, id)
 

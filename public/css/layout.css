@@ -1,0 +1,40 @@
+@font-face {
+    font-family: roboto;
+    src: url('/font/Roboto-Regular.ttf');
+}
+
+* 
+{
+ margin: 0;
+ padding: 0;
+}
+
+/* Fonts */
+body {
+    font-family: roboto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.searchbar {
+    display: block;
+    text-align: center;
+    padding: 3em;
+}
+
+.searchbar > form {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+.searchbar > form > input {
+    padding: 1em;
+}
+
+.result-count {
+    text-align: center;
+    padding-top: 1em;
+    padding-bottom: 3rem;
+}
