@@ -6,7 +6,7 @@ exports.pool = mysql.createPool({
     user: 'root', //
     password: 'password', //
     port: 3306,
-    database: 'central',
+    database: 'steamgames',
     namedPlaceholders: true,
     waitForConnections: true,
     connectionLimit: 10, // Adjust based on traffic

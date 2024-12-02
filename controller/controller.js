@@ -1,8 +1,21 @@
 const { pool } = require("../database/db.js")
 
+const shards = {
+    '1' : 'http://localhost:4000',
+    '1' : 'http://localhost:5000',
+    '1' : 'http://localhost:6000', 
+};
 
 exports.getHome = async (req, res) => {
-    const response = await fetch('http://localhost:5000/getTopEntries', {
+    const cookieValue = req.cookies.shard;
+
+    if (!cookieValue) {
+        res.cookie('shard', '1');
+    }
+
+    console.log("test if it works: " + shards[cookieValue] + "\n")
+
+    const response = await fetch(`${shards[cookieValue]}/getTopEntries`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -33,8 +46,28 @@ exports.getHome = async (req, res) => {
     }
 }
 
+exports.setNode = async (req, res) => {
+    const { node } = await req.params
+    try {
+        switch(node) {
+            case '1': res.cookie('shard', '1'); break;
+            case '2': res.cookie('shard', '2'); break;
+            case '3': res.cookie('shard', '3'); break;
+        }
+        res.send('Cookie has been set.');
+    } catch (err) {
+        res.status(500).send(err)
+    }
+}
+
 exports.getGames = async (req, res) => {
     try {
+        const cookieValue = req.cookies.shard;
+
+        if (!cookieValue) {
+            res.cookie('shard', '1');
+        }
+        
         const { query } = await req.params
         const response = await fetch('http://localhost:5000/search', {
             method: 'POST',
@@ -63,6 +96,12 @@ exports.getGames = async (req, res) => {
 
 exports.getSingleGame = async (req, res) => {
     try {
+        const cookieValue = req.cookies.shard;
+
+        if (!cookieValue) {
+            res.cookie('shard', '1');
+        }
+
         const { id } = await req.params;
         const response = await fetch('http://localhost:5000/getSingleGame', {
             method: 'POST',
@@ -108,6 +147,12 @@ exports.editGame = async (req, res) => {
     // 
     // dahil need pa ng react magic sa front end
     try {
+        const cookieValue = req.cookies.shard;
+
+        if (!cookieValue) {
+            res.cookie('shard', '1');
+        }
+
         const { id } = await req.params;
         const { body } = await req
 
@@ -213,6 +258,12 @@ exports.editGame = async (req, res) => {
 
 exports.deleteGame = async (req, res) => {
     try {
+        const cookieValue = req.cookies.shard;
+
+        if (!cookieValue) {
+            res.cookie('shard', '1');
+        }
+
         const { id } = await req.params;
         const response = await fetch('http://localhost:5000/deleteEntry', {
             method: 'POST',
