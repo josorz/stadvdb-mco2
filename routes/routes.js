@@ -9,6 +9,7 @@ router.get('/setCookie/:node', controller.setNode);
 
 router.get('/edit/:id', controller.getSingleGame);
 router.put('/edit/:id', controller.editGame);
+router.get('/404', controller.get404);
 router.delete('/edit/:id', controller.deleteGame);
 
 

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 Not Found</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            font-size: 50px;
+        }
+
+        p {
+            font-size: 20px;
+        }
+
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        function setCookie(node) {
+            fetch(`/setCookie/${node}`)
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error('Failed to set cookie');
+                    }
+                    return res.json();
+                })
+                .then((data) => {
+                    if (data.status === 200) {
+                        window.location.replace('/');
+                    } else {
+                        alert('Failed to set cookie. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                });
+        }
+    </script>
+</head>
+
+<body>
+    <h1>404</h1>
+    <p>Server not found</p>
+    <p><a href="#" onclick="setCookie(1); return false;">Connect to Master Node</a></p>
+    <p><a href="#" onclick="setCookie(2); return false;">Connect to Node 2</a></p>
+    <p><a href="#" onclick="setCookie(3); return false;">Connect to Node 3</a></p>
+</body>
+
+</html>

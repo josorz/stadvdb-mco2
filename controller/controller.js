@@ -1,75 +1,82 @@
 const { pool } = require("../database/db.js")
 
 const shards = {
-    '1' : 'http://localhost:4000',
-    '1' : 'http://localhost:5000',
-    '1' : 'http://localhost:6000', 
+    '1': 'http://localhost:4000',
+    '2': 'http://localhost:5000',
+    '3': 'http://localhost:5500',
 };
 
 exports.getHome = async (req, res) => {
-    const cookieValue = req.cookies.shard;
+    const cookieValue = req.cookies.shard || '1';;
 
-    if (!cookieValue) {
+    if (!req.cookies.shard) {
         res.cookie('shard', '1');
     }
 
-    console.log("test if it works: " + shards[cookieValue] + "\n")
-
-    const response = await fetch(`${shards[cookieValue]}/getTopEntries`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    const rows = await response.json();
-    const countRes = await fetch('http://localhost:5000/getCount', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-
-    const countjson = await countRes.json();
-    const count = countjson[0]['COUNT(*)'];
-
+    console.log(shards[cookieValue])
     try {
-        rows.forEach(row => {
-            if (row.Release_date) {
-                // Ensure Release_date is parsed as UTC
-                const releaseDate = new Date(row.Release_date);  // Append 'Z' to mark it as UTC
-                row.Release_date = releaseDate.toISOString().split('T')[0];
-            }
+
+        const response = await fetch(`${shards[cookieValue]}/getTopEntries`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
         });
-        res.render('home/home', { rows, count });
+
+        if (!response.ok) {
+            console.log('Failed to fetch data from main server');
+            res.redirect('/404');
+        }
+        const rows = await response.json();
+
+        const countRes = await fetch(`${shards[cookieValue]}/getCount`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const countjson = await countRes.json();
+        const count = countjson[0]['COUNT(*)'];
+
+        try {
+            rows.forEach(row => {
+                if (row.Release_date) {
+                    // Ensure Release_date is parsed as UTC
+                    const releaseDate = new Date(row.Release_date);  // Append 'Z' to mark it as UTC
+                    row.Release_date = releaseDate.toISOString().split('T')[0];
+                }
+            });
+            res.render('home/home', { rows, count });
+        } catch (e) {
+            res.status(500).json({ message: e.message });
+        }
     } catch (e) {
-        res.status(500).json({ message: e.message });
+        res.redirect('/404');
     }
 }
 
-exports.setNode = async (req, res) => {
-    const { node } = await req.params
-    try {
-        switch(node) {
-            case '1': res.cookie('shard', '1'); break;
-            case '2': res.cookie('shard', '2'); break;
-            case '3': res.cookie('shard', '3'); break;
-        }
-        res.send('Cookie has been set.');
-    } catch (err) {
-        res.status(500).send(err)
+exports.setNode = (req, res) => {
+    const { node } = req.params;
+
+    if (!['1', '2', '3'].includes(node)) {
+        return res.status(400).send('Invalid node value.');
     }
-}
+
+    res.cookie('shard', node);
+    res.status(200).json({ status: 200, message: 'Cookie set successfully' });
+};
 
 exports.getGames = async (req, res) => {
     try {
-        const cookieValue = req.cookies.shard;
+        const cookieValue = req.cookies.shard || '1';;
 
-        if (!cookieValue) {
+        if (!req.cookies.shard) {
             res.cookie('shard', '1');
         }
-        
+
         const { query } = await req.params
-        const response = await fetch('http://localhost:5000/search', {
+        const response = await fetch(`${shards[cookieValue]}/search`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -96,14 +103,14 @@ exports.getGames = async (req, res) => {
 
 exports.getSingleGame = async (req, res) => {
     try {
-        const cookieValue = req.cookies.shard;
+        const cookieValue = req.cookies.shard || '1';;
 
-        if (!cookieValue) {
+        if (!req.cookies.shard) {
             res.cookie('shard', '1');
         }
 
         const { id } = await req.params;
-        const response = await fetch('http://localhost:5000/getSingleGame', {
+        const response = await fetch(`${shards[cookieValue]}/getSingleGame`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -147,9 +154,9 @@ exports.editGame = async (req, res) => {
     // 
     // dahil need pa ng react magic sa front end
     try {
-        const cookieValue = req.cookies.shard;
+        const cookieValue = req.cookies.shard || '1';;
 
-        if (!cookieValue) {
+        if (!req.cookies.shard) {
             res.cookie('shard', '1');
         }
 
@@ -238,12 +245,12 @@ exports.editGame = async (req, res) => {
 
         const original_date = body.original_date
 
-        const response = await fetch('http://localhost:5000/updateEntry', {
+        const response = await fetch(`${shards[cookieValue]}/updateEntry`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ sql, qparam,  })
+            body: JSON.stringify({ sql, qparam, })
         });
 
         const data = await response.json();
@@ -258,14 +265,14 @@ exports.editGame = async (req, res) => {
 
 exports.deleteGame = async (req, res) => {
     try {
-        const cookieValue = req.cookies.shard;
+        const cookieValue = req.cookies.shard || '1';;
 
-        if (!cookieValue) {
+        if (!req.cookies.shard) {
             res.cookie('shard', '1');
         }
 
         const { id } = await req.params;
-        const response = await fetch('http://localhost:5000/deleteEntry', {
+        const response = await fetch(`${shards[cookieValue]}/deleteEntry`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -279,4 +286,8 @@ exports.deleteGame = async (req, res) => {
     } catch (e) {
         res.status(500).json({ message: e.message });
     }
+}
+
+exports.get404 = (req, res) => {
+    res.render('404/notfound');
 }

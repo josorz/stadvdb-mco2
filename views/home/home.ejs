@@ -19,21 +19,23 @@
 <body class="body">
   <%- include('../partial/header.ejs'); %>
 
-  <!-- Main Content -->
-  <main class="container">
-    <div class="searchbar">
-      <form onSubmit="search(event)">
-        <input type="text" id="searchQuery" placeholder="Search Games" />
-      </form>
-    </div>
+    <!-- Main Content -->
+    <main class="container">
+      <div class="searchbar">
+        <form onSubmit="search(event)">
+          <input type="text" id="searchQuery" placeholder="Search Games" />
+        </form>
+      </div>
 
-    <%- include('../partial/table.ejs', rows); %>
+      <%- include('../partial/table.ejs', rows); %>
 
-    <h3 class="result-count"><%= count %> games in database</h3>
-  </main>
+        <h3 class="result-count">
+          <%= count %> games in database
+        </h3>
+    </main>
 
-  <!-- Footer -->
-  <%- include('../partial/footer.ejs'); %>
+    <!-- Footer -->
+    <%- include('../partial/footer.ejs'); %>
 
 </body>
 
