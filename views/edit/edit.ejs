@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="/css/layout.css">
   <title>Steam Games</title>
   <script>
+    const original_date = "<%= data.Release_date %>"
+
     const handleDelete = async (e) => {
       e.preventDefault()
       fetch(`/edit/<%= data.AppID %>`, {
@@ -34,6 +36,8 @@
       formData.forEach((value, key) => {
         formDataJson[key] = value;
       });
+      formDataJson['original_date'] = original_date
+      console.log(formDataJson)
 
       fetch("/edit/<%= data.AppID %>", {
           method: 'PUT',

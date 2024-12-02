@@ -191,12 +191,14 @@ exports.editGame = async (req, res) => {
             id
         ]
 
+        const original_date = body.original_date
+
         const response = await fetch('http://localhost:5000/updateEntry', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ sql, qparam })
+            body: JSON.stringify({ sql, qparam,  })
         });
 
         const data = await response.json();
