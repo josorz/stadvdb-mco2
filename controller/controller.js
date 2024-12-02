@@ -2,14 +2,14 @@ const { pool } = require("../database/db.js")
 
 
 exports.getHome = async (req, res) => {
-    const response = await fetch('http://localhost:4000/getTopEntries', {
+    const response = await fetch('http://localhost:5000/getTopEntries', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
     });
     const rows = await response.json();
-    const countRes = await fetch('http://localhost:4000/getCount', {
+    const countRes = await fetch('http://localhost:5000/getCount', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -36,13 +36,20 @@ exports.getHome = async (req, res) => {
 exports.getGames = async (req, res) => {
     try {
         const { query } = await req.params
-        const search = query.slice(0, -1).replace("+", " ")
-        const [rows] = await pool.query(`SELECT AppID, Name, Release_date FROM steamgames WHERE Name LIKE '%${search}%' OR AppID='${search}';`)
+        const response = await fetch('http://localhost:5000/search', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query })
+        });
+
+        const rows = await response.json();
 
         rows.forEach(row => {
             if (row.Release_date) {
                 // Ensure Release_date is parsed as UTC
-                const releaseDate = new Date(row.Release_date + 'Z');  // Append 'Z' to mark it as UTC
+                const releaseDate = new Date(row.Release_date);  // Append 'Z' to mark it as UTC
                 row.Release_date = releaseDate.toISOString().split('T')[0];
             }
         });
@@ -57,17 +64,21 @@ exports.getGames = async (req, res) => {
 exports.getSingleGame = async (req, res) => {
     try {
         const { id } = await req.params;
-        const [rows] = await pool.query('SELECT * FROM steamgames WHERE AppID = ' + id)
-
-        rows.forEach(row => {
-            if (row.Release_date) {
-                // Ensure Release_date is parsed as UTC
-                const releaseDate = new Date(row.Release_date + 'Z');  // Append 'Z' to mark it as UTC
-                row.Release_date = releaseDate.toISOString().split('T')[0];
-            }
+        const response = await fetch('http://localhost:5000/getSingleGame', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ AppID: id })
         });
 
-        res.render('edit/edit', { data: rows[0] });
+        const rows = await response.json();
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: 'Game not found' });
+        } else {
+            res.render('edit/edit', { data: rows[0] });
+        }
     } catch (e) {
         res.status(500).json({ message: e.message });
     }
@@ -180,7 +191,16 @@ exports.editGame = async (req, res) => {
             id
         ]
 
-        await pool.query(sql, qparam)
+        const response = await fetch('http://localhost:5000/updateEntry', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ sql, qparam })
+        });
+
+        const data = await response.json();
+        console.log(data)
 
         return res.status(200).json({ success: true })
     } catch (err) {
@@ -192,7 +212,7 @@ exports.editGame = async (req, res) => {
 exports.deleteGame = async (req, res) => {
     try {
         const { id } = await req.params;
-        const response = await fetch('http://localhost:4000/deleteEntry', {
+        const response = await fetch('http://localhost:5000/deleteEntry', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
