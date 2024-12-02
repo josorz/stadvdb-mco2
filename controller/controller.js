@@ -2,18 +2,16 @@ const { pool } = require("../database/db.js")
 
 const shards = {
     '1' : 'http://localhost:4000',
-    '1' : 'http://localhost:5000',
-    '1' : 'http://localhost:6000', 
+    '2' : 'http://localhost:5000',
+    '3' : 'http://localhost:6000', 
 };
 
 exports.getHome = async (req, res) => {
-    const cookieValue = req.cookies.shard;
+    const cookieValue = req.cookies.shard || '1';;
 
-    if (!cookieValue) {
+    if (!req.cookies.shard) {
         res.cookie('shard', '1');
     }
-
-    console.log("test if it works: " + shards[cookieValue] + "\n")
 
     const response = await fetch(`${shards[cookieValue]}/getTopEntries`, {
         method: 'POST',
@@ -22,7 +20,7 @@ exports.getHome = async (req, res) => {
         },
     });
     const rows = await response.json();
-    const countRes = await fetch('http://localhost:5000/getCount', {
+    const countRes = await fetch(`${shards[cookieValue]}/getCount`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -46,30 +44,27 @@ exports.getHome = async (req, res) => {
     }
 }
 
-exports.setNode = async (req, res) => {
-    const { node } = await req.params
-    try {
-        switch(node) {
-            case '1': res.cookie('shard', '1'); break;
-            case '2': res.cookie('shard', '2'); break;
-            case '3': res.cookie('shard', '3'); break;
-        }
-        res.send('Cookie has been set.');
-    } catch (err) {
-        res.status(500).send(err)
+exports.setNode = (req, res) => {
+    const { node } = req.params;
+
+    if (!['1', '2', '3'].includes(node)) {
+        return res.status(400).send('Invalid node value.');
     }
-}
+
+    res.cookie('shard', node);
+    return res.status(200).send('Cookie has been set.');
+};
 
 exports.getGames = async (req, res) => {
     try {
-        const cookieValue = req.cookies.shard;
+        const cookieValue = req.cookies.shard || '1';;
 
-        if (!cookieValue) {
+        if (!req.cookies.shard) {
             res.cookie('shard', '1');
         }
         
         const { query } = await req.params
-        const response = await fetch('http://localhost:5000/search', {
+        const response = await fetch(`${shards[cookieValue]}/search`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -96,14 +91,14 @@ exports.getGames = async (req, res) => {
 
 exports.getSingleGame = async (req, res) => {
     try {
-        const cookieValue = req.cookies.shard;
+        const cookieValue = req.cookies.shard || '1';;
 
-        if (!cookieValue) {
+        if (!req.cookies.shard) {
             res.cookie('shard', '1');
         }
 
         const { id } = await req.params;
-        const response = await fetch('http://localhost:5000/getSingleGame', {
+        const response = await fetch(`${shards[cookieValue]}/getSingleGame`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -147,9 +142,9 @@ exports.editGame = async (req, res) => {
     // 
     // dahil need pa ng react magic sa front end
     try {
-        const cookieValue = req.cookies.shard;
+        const cookieValue = req.cookies.shard || '1';;
 
-        if (!cookieValue) {
+        if (!req.cookies.shard) {
             res.cookie('shard', '1');
         }
 
@@ -238,7 +233,7 @@ exports.editGame = async (req, res) => {
 
         const original_date = body.original_date
 
-        const response = await fetch('http://localhost:5000/updateEntry', {
+        const response = await fetch(`${shards[cookieValue]}/updateEntry`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -258,14 +253,14 @@ exports.editGame = async (req, res) => {
 
 exports.deleteGame = async (req, res) => {
     try {
-        const cookieValue = req.cookies.shard;
+        const cookieValue = req.cookies.shard || '1';;
 
-        if (!cookieValue) {
+        if (!req.cookies.shard) {
             res.cookie('shard', '1');
         }
 
         const { id } = await req.params;
-        const response = await fetch('http://localhost:5000/deleteEntry', {
+        const response = await fetch(`${shards[cookieValue]}/deleteEntry`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

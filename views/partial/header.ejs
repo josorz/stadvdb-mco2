@@ -1,5 +1,27 @@
 <head>
   <link rel="stylesheet" href="/css/header.css">
+  <script>
+    function setCookie(node) {
+      fetch(`/setCookie/${node}`)
+        .then(res => {
+          if (!res.ok) {
+            throw new Error('Failed to set cookie');
+          }
+          return res.json();
+        })
+        .then((data) => {
+          if (data.status === 200) {
+            window.location.replace('/');
+          } else {
+            alert('Failed to set cookie. Please try again.');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred. Please try again.');
+        });
+    }
+  </script>
 </head>
 <header class="header">
   <nav class="nav">
@@ -8,13 +30,13 @@
     </div>
     <ul class="nav-list">
       <li>
-        <a href="/setCookie/1">Master Node</a>
+        <a href="#" onclick="setCookie(1); return false;">Master Node</a>
       </li>
       <li>
-        <a href="/setCookie/2">Node 2</a>
+        <a href="#" onclick="setCookie(2); return false;">Node 2</a>
       </li>
       <li>
-        <a href="/setCookie/3">Node 3</a>
+        <a href="#" onclick="setCookie(3); return false;">Node 3</a>
       </li>
     </ul>
   </nav>
