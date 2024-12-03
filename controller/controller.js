@@ -251,7 +251,7 @@ exports.editGame = async (req, res) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ sql, qparam, sanitizeParam, id })
+            body: JSON.stringify({ sql, qparam, sanitizedParam, id })
         });
 
         const data = await response.json();
@@ -295,6 +295,7 @@ exports.get404 = (req, res) => {
 
 exports.sync = async (req, res) => {
     try {
+        const cookieValue = req.cookies.shard || '1';
         const response = await fetch(`${shards[cookieValue]}/sync`, {
             method: 'POST',
             headers: {
@@ -306,9 +307,31 @@ exports.sync = async (req, res) => {
             console.log('Failed to sync data');
             res.redirect('/404');
         } else {
-            res.redirect('/');
+            let data = await response.json();
+            console.log(data);
+            if (cookieValue == 1) {
+                if (data.node2 === "Synced" && data.node3 === "Synced") {
+                    res.status(200).json({ message: "Synced All Nodes Successfully" });
+                } else if (data.node2 === "Failed" && data.node3 === "Failed") {
+                    res.status(200).json({ message: "Failed to sync Node 2 and Node 3" });
+                } else if (data.node2 === "Failed" && data.node3 === "Synced") {
+                    res.status(200).json({ message: "Synced Node 3 Successfully but failed to sync Node 2" });
+                } else if (data.node2 === "Synced" && data.node3 === "Failed") {
+                    res.status(200).json({ message: "Synced Node 2 Successfully but failed to sync Node 3" });
+                } else {
+                    res.status(500).json({ message: "Server Error" });
+                }
+            } else {
+                if (data.success) {
+                    res.status(200).json({ message: "Synced Central Node Successfully" });
+                }
+                else {
+                    res.status(200).json({ message: "Failed to sync Central Node" });
+                }
+            }
         }
     } catch (e) {
+        console.log("Error: ", e);
         res.redirect('/404');
     }
 }

@@ -31,12 +31,8 @@
                     return res.json();
                 })
                 .then((data) => {
-                    if (data.status === 200) {
-                        window.location.replace('/');
-                        alert('Sync successful');
-                    } else {
-                        alert('Failed to sync. Please try again.');
-                    }
+                    alert(data.message);
+                    window.location.replace('/');
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -53,7 +49,7 @@
         <ul class="nav-list">
             <!-- Sync button -->
             <li>
-                <a href="#" onclick="sync(); return false;">Sync</a>
+                <p onclick="sync()">Sync</p>
             </li>
             <li>
                 <a href="#" onclick="setCookie(1); return false;">Master Node</a>

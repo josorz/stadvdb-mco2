@@ -44,6 +44,12 @@
   cursor: pointer;
 }
 
+.nav-list p {
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .nav-list a:hover {
   color: #9ca3af;
   /* hover:text-gray-400 */
