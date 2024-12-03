@@ -39,7 +39,7 @@
 }
 
 .nav-list a {
-  color: red;
+  color: white;
   text-decoration: none;
   cursor: pointer;
 }
@@ -47,4 +47,10 @@
 .nav-list a:hover {
   color: #9ca3af;
   /* hover:text-gray-400 */
+}
+
+.selected {
+  color: #9ca3af;
+  font-weight: bold;
+  /* text-gray-400 */
 }

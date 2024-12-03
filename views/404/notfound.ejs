@@ -28,6 +28,13 @@
         a:hover {
             text-decoration: underline;
         }
+
+        .nav_list {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 20px;
+        }
     </style>
     <script>
         function setCookie(node) {
@@ -56,9 +63,12 @@
 <body>
     <h1>404</h1>
     <p>Server not found</p>
-    <p><a href="#" onclick="setCookie(1); return false;">Connect to Master Node</a></p>
-    <p><a href="#" onclick="setCookie(2); return false;">Connect to Node 2</a></p>
-    <p><a href="#" onclick="setCookie(3); return false;">Connect to Node 3</a></p>
+    <p>Choose a server to connect to:</p>
+    <div class="nav_list">
+        <a href="#" onclick="setCookie(1); return false;">Master Node</a>
+        <a href="#" onclick="setCookie(2); return false;">Node 2</a>
+        <a href="#" onclick="setCookie(3); return false;">Node 3</a>
+    </div>
 </body>
 
 </html>

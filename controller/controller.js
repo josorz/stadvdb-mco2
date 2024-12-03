@@ -3,7 +3,7 @@ const { pool } = require("../database/db.js")
 const shards = {
     '1': 'http://localhost:4000',
     '2': 'http://localhost:5000',
-    '3': 'http://localhost:5500',
+    '3': 'http://localhost:5001',
 };
 
 exports.getHome = async (req, res) => {
@@ -118,7 +118,8 @@ exports.getSingleGame = async (req, res) => {
             body: JSON.stringify({ AppID: id })
         });
 
-        const rows = await response.json();
+        let rows = await response.json();
+        rows[0]['Release_date'] = new Date(rows[0]['Release_date']).toISOString().split('T')[0];
 
         if (rows.length === 0) {
             return res.status(404).json({ message: 'Game not found' });
@@ -250,7 +251,7 @@ exports.editGame = async (req, res) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ sql, qparam, })
+            body: JSON.stringify({ sql, qparam, sanitizeParam, id })
         });
 
         const data = await response.json();

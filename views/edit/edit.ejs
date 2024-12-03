@@ -13,14 +13,14 @@
     const handleDelete = async (e) => {
       e.preventDefault()
       fetch(`/edit/<%= data.AppID %>`, {
-          method: 'DELETE'
-        }).then((res) => res.json())
+        method: 'DELETE'
+      }).then((res) => res.json())
         .then(({
           success
         }) => {
           if (success) {
             window.location.href = '/'
-          } else {}
+          } else { }
         })
     };
 
@@ -40,18 +40,18 @@
       console.log(formDataJson)
 
       fetch("/edit/<%= data.AppID %>", {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json', // Indicate that the body is JSON
-          },
-          body: JSON.stringify(formDataJson)
-        }).then((res) => res.json())
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json', // Indicate that the body is JSON
+        },
+        body: JSON.stringify(formDataJson)
+      }).then((res) => res.json())
         .then(({
           success
         }) => {
           if (success) {
             window.location.href = '/'
-          } else {}
+          } else { }
         })
     };
   </script>
@@ -192,283 +192,283 @@
 <body class="body">
   <%- include('../partial/header.ejs'); %>
 
-  <main class="container">
-    <div class="content-wrap">
-      <form onSubmit="" name="editForm" id="editForm" onSubmit="handleSubmit(event)">
-        <div>
-          <button type="submit" onClick="handleSubmit(event)">
-            Update
-          </button>
-          <button onClick="handleDelete(event)">
-            Delete
-          </button>
-        </div>
-
-        <div>
+    <main class="container">
+      <div class="content-wrap">
+        <form onSubmit="" name="editForm" id="editForm" onSubmit="handleSubmit(event)">
           <div>
-            <label>Name</label>
-            <input name="Name" type="text" value="<%= data.Name %>" />
+            <button type="submit" onClick="handleSubmit(event)">
+              Update
+            </button>
+            <button onClick="handleDelete(event)">
+              Delete
+            </button>
           </div>
 
           <div>
-            <label>Release Date</label>
-            <input name="Release_date" type="date" value="<%= data.Release_date %>" />
-          </div>
-        </div>
-
-
-        <div class="two-column">
-          <div>
-            <label>Estimated Owners</label>
-            <input name="Estimated_owners" type="text" value="<%= data.Estimated_owners %>" />
+            <div>
+              <label>Name</label>
+              <input name="Name" type="text" value="<%= data.Name %>" />
+            </div>
           </div>
 
 
-          <div>
-            <label>Peak CCU</label>
-            <input name="Peak_CCU" type="number" value="<%= data.Peak_CCU %>" />
-          </div>
+          <div class="two-column">
+            <div>
+              <label>Estimated Owners</label>
+              <input name="Estimated_owners" type="text" value="<%= data.Estimated_owners %>" />
+            </div>
 
 
-          <div>
-            <label>Required Age</label>
-            <input name="Required_age" type="number" value="<%= data.Required_age %>" />
-          </div>
-        </div>
+            <div>
+              <label>Peak CCU</label>
+              <input name="Peak_CCU" type="number" value="<%= data.Peak_CCU %>" />
+            </div>
 
 
-        <div>
-          <div>
-            <label>Price</label>
-            <input name="Price" type="number" step="0.01" value="<%= data.Price %>" />
+            <div>
+              <label>Required Age</label>
+              <input name="Required_age" type="number" value="<%= data.Required_age %>" />
+            </div>
           </div>
 
 
           <div>
-            <label>Discount DLC Count</label>
-            <input name="DiscountDLC_count" type="number" value="<%= data.DiscountDLC_count %>" />
-          </div>
-
-        </div>
-
-        <div>
-          <label>About the Game</label>
-          <textarea name="About_the_game"><%= data.About_the_game %></textarea>
-        </div>
+            <div>
+              <label>Price</label>
+              <input name="Price" type="number" step="0.01" value="<%= data.Price %>" />
+            </div>
 
 
-        <div>
-          <div>
-            <label>Supported Languages</label>
-            <input name="Supported_languages" type="text" value="<%= data.Supported_languages %>" />
-          </div>
+            <div>
+              <label>Discount DLC Count</label>
+              <input name="DiscountDLC_count" type="number" value="<%= data.DiscountDLC_count %>" />
+            </div>
 
-
-          <div>
-            <label>Full Audio Languages</label>
-            <input name="Full_audio_languages" type="text" value="<%= data.Full_audio_languages %>" />
           </div>
 
           <div>
-            <label>Reviews</label>
-            <input name="Reviews" type="text" value="<%= data.Reviews %>" />
-          </div>
-
-        </div>
-
-        <div>
-          <div>
-            <label>Header Image</label>
-            <input name="Header_image" type="text" value="<%= data.Header_image %>" />
+            <label>About the Game</label>
+            <textarea name="About_the_game"><%= data.About_the_game %></textarea>
           </div>
 
 
           <div>
-            <label>Website</label>
-            <input name="Website" type="text" value="<%= data.Website %>" />
+            <div>
+              <label>Supported Languages</label>
+              <input name="Supported_languages" type="text" value="<%= data.Supported_languages %>" />
+            </div>
+
+
+            <div>
+              <label>Full Audio Languages</label>
+              <input name="Full_audio_languages" type="text" value="<%= data.Full_audio_languages %>" />
+            </div>
+
+            <div>
+              <label>Reviews</label>
+              <input name="Reviews" type="text" value="<%= data.Reviews %>" />
+            </div>
+
           </div>
 
           <div>
-            <label>Support_url</label>
-            <input name="Support_url" type="text" value="<%= data.Support_url %>" />
+            <div>
+              <label>Header Image</label>
+              <input name="Header_image" type="text" value="<%= data.Header_image %>" />
+            </div>
+
+
+            <div>
+              <label>Website</label>
+              <input name="Website" type="text" value="<%= data.Website %>" />
+            </div>
+
+            <div>
+              <label>Support_url</label>
+              <input name="Support_url" type="text" value="<%= data.Support_url %>" />
+            </div>
+
+            <div>
+              <label>Support_email</label>
+              <input name="Support_email" type="text" value="<%= data.Support_email %>" />
+            </div>
+
           </div>
 
           <div>
-            <label>Support_email</label>
-            <input name="Support_email" type="text" value="<%= data.Support_email %>" />
-          </div>
+            <div>
+              <input type="checkbox" name="Windows" defaultChecked="<%= data.Windows %>" />
+              <label htmlFor="example">
+                Windows
+              </label>
+            </div>
 
-        </div>
-
-        <div>
-          <div>
-            <input type="checkbox" name="Windows" defaultChecked="<%= data.Windows %>" />
-            <label htmlFor="example">
-              Windows
-            </label>
-          </div>
-
-          <div>
-            <input type="checkbox" name="Mac" defaultChecked="<%= data.Mac %>" />
-            <label htmlFor="example">
-              Mac
-            </label>
-          </div>
-          <div>
-            <input type="checkbox" name="Linux" defaultChecked="<%= data.Linux %>" />
-            <label htmlFor="example">
-              Linux
-            </label>
-          </div>
-        </div>
-
-
-
-        <div>
-          <label>Metacritic</label>
-          <input name="Metacritic_url" type="text" value="<%= data.Metacritic_url %>" />
-        </div>
-
-
-        <div>
-
-          <div>
-            <label>Metacritic Score</label>
-            <input name="Metacritic_score" type="number" value="<%= data.Metacritic_score %>" />
+            <div>
+              <input type="checkbox" name="Mac" defaultChecked="<%= data.Mac %>" />
+              <label htmlFor="example">
+                Mac
+              </label>
+            </div>
+            <div>
+              <input type="checkbox" name="Linux" defaultChecked="<%= data.Linux %>" />
+              <label htmlFor="example">
+                Linux
+              </label>
+            </div>
           </div>
 
 
-          <div>
-            <label>User Score</label>
-            <input name="User_score" type="number" value="<%= data.User_score %>" />
-          </div>
-
 
           <div>
-            <label>Positive Reviews</label>
-            <input name="Positive" type="number" value="<%= data.Positive %>" />
-          </div>
-        </div>
-
-
-        <div>
-          <div>
-            <label>Negative Reviews</label>
-            <input name="Negative" type="number" value="<%= data.Negative %>" />
+            <label>Metacritic</label>
+            <input name="Metacritic_url" type="text" value="<%= data.Metacritic_url %>" />
           </div>
 
 
           <div>
-            <label>Score Rank</label>
-            <input name="Score_rank" type="number" value="<%= data.Score_rank %>" />
+
+            <div>
+              <label>Metacritic Score</label>
+              <input name="Metacritic_score" type="number" value="<%= data.Metacritic_score %>" />
+            </div>
+
+
+            <div>
+              <label>User Score</label>
+              <input name="User_score" type="number" value="<%= data.User_score %>" />
+            </div>
+
+
+            <div>
+              <label>Positive Reviews</label>
+              <input name="Positive" type="number" value="<%= data.Positive %>" />
+            </div>
           </div>
 
 
           <div>
-            <label>Achievements</label>
-            <input name="Achievements" type="number" value="<%= data.Achievements %>" />
-          </div>
-        </div>
+            <div>
+              <label>Negative Reviews</label>
+              <input name="Negative" type="number" value="<%= data.Negative %>" />
+            </div>
 
 
-        <div>
-          <div>
-            <label>Recommendations</label>
-            <input name="Recommendations" type="number" value="<%= data.Recommendations %>" />
-          </div>
+            <div>
+              <label>Score Rank</label>
+              <input name="Score_rank" type="number" value="<%= data.Score_rank %>" />
+            </div>
 
-          <div>
-            <label>Notes</label>
-            <textarea name="Screenshots"><%= data.Notes %></textarea>
-          </div>
-        </div>
 
-        <div>
-          <div>
-            <label>Average_playtime_forever</label>
-            <input name="Metacritic_score" type="number" value="<%= data.Average_playtime_forever %>" />
+            <div>
+              <label>Achievements</label>
+              <input name="Achievements" type="number" value="<%= data.Achievements %>" />
+            </div>
           </div>
 
 
           <div>
-            <label>Average_playtime_two_weeks</label>
-            <input name="User_score" type="number" value="<%= data.Average_playtime_two_weeks %>" />
-          </div>
-        </div>
+            <div>
+              <label>Recommendations</label>
+              <input name="Recommendations" type="number" value="<%= data.Recommendations %>" />
+            </div>
 
-        <div>
-          <div>
-            <label>Median_playtime_forever</label>
-            <input name="Metacritic_score" type="number" value="<%= data.Median_playtime_forever %>" />
-          </div>
-
-
-          <div>
-            <label>Median_playtime_two_weeks</label>
-            <input name="User_score" type="number" value="<%= data.Median_playtime_two_weeks %>" />
-          </div>
-        </div>
-
-
-        <div>
-
-
-          <div>
-            <label>Owner Count</label>
-            <input name="Owner_count" type="number" value="<%= data.Owner_count %>" />
-          </div>
-
-
-          <div>
-            <label>Discount Price</label>
-            <input name="Discount_price" type="number" value="<%= data.Discount_price %>" />
-          </div>
-        </div>
-
-        <div>
-          <div>
-            <label>Developers</label>
-            <input name="Developers" type="text" value="<%= data.Developers %>" />
+            <div>
+              <label>Notes</label>
+              <textarea name="Screenshots"><%= data.Notes %></textarea>
+            </div>
           </div>
 
           <div>
-            <label>Publishers</label>
-            <input name="Publishers" type="text" value="<%= data.Publishers %>" />
+            <div>
+              <label>Average_playtime_forever</label>
+              <input name="Metacritic_score" type="number" value="<%= data.Average_playtime_forever %>" />
+            </div>
+
+
+            <div>
+              <label>Average_playtime_two_weeks</label>
+              <input name="User_score" type="number" value="<%= data.Average_playtime_two_weeks %>" />
+            </div>
           </div>
 
           <div>
-            <label>Categories</label>
-            <input name="Categories" type="text" value="<%= data.Categories %>" />
-          </div>
-        </div>
+            <div>
+              <label>Median_playtime_forever</label>
+              <input name="Metacritic_score" type="number" value="<%= data.Median_playtime_forever %>" />
+            </div>
 
-        <div>
+
+            <div>
+              <label>Median_playtime_two_weeks</label>
+              <input name="User_score" type="number" value="<%= data.Median_playtime_two_weeks %>" />
+            </div>
+          </div>
+
+
           <div>
-            <label>Genres</label>
-            <input name="Developers" type="text" value="<%= data.Genres %>" />
+
+
+            <div>
+              <label>Owner Count</label>
+              <input name="Owner_count" type="number" value="<%= data.Owner_count %>" />
+            </div>
+
+
+            <div>
+              <label>Discount Price</label>
+              <input name="Discount_price" type="number" value="<%= data.Discount_price %>" />
+            </div>
           </div>
 
           <div>
-            <label>Tags</label>
-            <input name="Categories" type="text" value="<%= data.Tags %>" />
+            <div>
+              <label>Developers</label>
+              <input name="Developers" type="text" value="<%= data.Developers %>" />
+            </div>
+
+            <div>
+              <label>Publishers</label>
+              <input name="Publishers" type="text" value="<%= data.Publishers %>" />
+            </div>
+
+            <div>
+              <label>Categories</label>
+              <input name="Categories" type="text" value="<%= data.Categories %>" />
+            </div>
           </div>
-        </div>
+
+          <div>
+            <div>
+              <label>Genres</label>
+              <input name="Developers" type="text" value="<%= data.Genres %>" />
+            </div>
+
+            <div>
+              <label>Tags</label>
+              <input name="Categories" type="text" value="<%= data.Tags %>" />
+            </div>
+
+            <div>
+              <label>Release Date</label>
+              <input name="Release_date" type="date" value="<%= data.Release_date %>" />
+            </div>
+          </div>
 
 
 
-        <div>
-          <label>Screenshots (URLs)</label>
-          <textarea name="Screenshots"><%= data.Screenshots %></textarea>
-        </div>
+          <div>
+            <label>Screenshots (URLs)</label>
+            <textarea name="Screenshots"><%= data.Screenshots %></textarea>
+          </div>
 
-        <div>
-          <label>Movies</label>
-          <textarea name="Movies"><%= data.Movies %></textarea>
-        </div>
+          <div>
+            <label>Movies</label>
+            <textarea name="Movies"><%= data.Movies %></textarea>
+          </div>
 
-      </form>
-    </div>
-  </main>
+        </form>
+      </div>
+    </main>
 
 </body>
 
