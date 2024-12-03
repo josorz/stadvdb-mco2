@@ -1,5 +1,3 @@
-const { pool } = require("../database/db.js")
-
 const shards = {
     '1': 'http://ccscloud.dlsu.edu.ph:22250',
     '2': 'http://ccscloud.dlsu.edu.ph:22260',
