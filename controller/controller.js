@@ -1,9 +1,9 @@
 const { pool } = require("../database/db.js")
 
 const shards = {
-    '1': 'http://localhost:4000',
-    '2': 'http://localhost:5000',
-    '3': 'http://localhost:5001',
+    '1': 'http://ccscloud.dlsu.edu.ph:22250',
+    '2': 'http://ccscloud.dlsu.edu.ph:22260',
+    '3': 'http://ccscloud.dlsu.edu.ph:22270',
 };
 
 exports.getHome = async (req, res) => {
