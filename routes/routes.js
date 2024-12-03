@@ -6,6 +6,7 @@ router.get('/', controller.getHome);
 router.get('/search/:query', controller.getGames);
 
 router.get('/setCookie/:node', controller.setNode);
+router.get('/sync', controller.sync);
 
 router.get('/edit/:id', controller.getSingleGame);
 router.put('/edit/:id', controller.editGame);

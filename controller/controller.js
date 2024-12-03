@@ -292,3 +292,23 @@ exports.deleteGame = async (req, res) => {
 exports.get404 = (req, res) => {
     res.render('404/notfound');
 }
+
+exports.sync = async (req, res) => {
+    try {
+        const response = await fetch(`${shards[cookieValue]}/sync`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            console.log('Failed to sync data');
+            res.redirect('/404');
+        } else {
+            res.redirect('/');
+        }
+    } catch (e) {
+        res.redirect('/404');
+    }
+}

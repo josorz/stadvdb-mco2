@@ -21,6 +21,28 @@
                     alert('An error occurred. Please try again.');
                 });
         }
+
+        function sync() {
+            fetch(`/sync`)
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error('Failed to sync');
+                    }
+                    return res.json();
+                })
+                .then((data) => {
+                    if (data.status === 200) {
+                        window.location.replace('/');
+                        alert('Sync successful');
+                    } else {
+                        alert('Failed to sync. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                });
+        };
     </script>
 </head>
 <header class="header">
@@ -29,6 +51,10 @@
             <a href="/">Steam Games</a>
         </div>
         <ul class="nav-list">
+            <!-- Sync button -->
+            <li>
+                <a href="#" onclick="sync(); return false;">Sync</a>
+            </li>
             <li>
                 <a href="#" onclick="setCookie(1); return false;">Master Node</a>
             </li>
